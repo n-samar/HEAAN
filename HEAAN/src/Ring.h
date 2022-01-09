@@ -1,15 +1,15 @@
 /*
-* Copyright (c) by CryptoLab inc.
-* This program is licensed under a
-* Creative Commons Attribution-NonCommercial 3.0 Unported License.
-* You should have received a copy of the license along with this
-* work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
-*/
+ * Copyright (c) by CryptoLab inc.
+ * This program is licensed under a
+ * Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ * You should have received a copy of the license along with this
+ * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+ */
 #ifndef HEAAN_RING_H_
 #define HEAAN_RING_H_
 
-#include <NTL/ZZ.h>
 #include <NTL/RR.h>
+#include <NTL/ZZ.h>
 #include <complex>
 #include <map>
 #include "BootContext.h"
@@ -18,159 +18,148 @@
 using namespace std;
 using namespace NTL;
 
+namespace heaan {
+
 static RR Pi = ComputePi_RR();
 
 class Ring {
+   public:
+    ZZ* qpows;
+    long* rotGroup;
+    complex<double>* ksiPows;
+    map<long, BootContext*> bootContextMap;
+    RingMultiplier multiplier;
 
-public:
+    Ring();
 
-	ZZ* qpows;
-	long* rotGroup;
-	complex<double>* ksiPows;
-	map<long, BootContext*> bootContextMap;
-	RingMultiplier multiplier;
+    //----------------------------------------------------------------------------------
+    //   Encode & Decode
+    //----------------------------------------------------------------------------------
 
-	Ring();
+    void arrayBitReverse(complex<double>* vals, long size);
 
+    void EMB(complex<double>* vals, long size);
 
-	//----------------------------------------------------------------------------------
-	//   Encode & Decode
-	//----------------------------------------------------------------------------------
+    void EMBInvLazy(complex<double>* vals, long size);
 
+    void EMBInv(complex<double>* vals, long size);
 
-	void arrayBitReverse(complex<double>* vals, long size);
+    void encode(ZZ* mx, double* vals, long slots, long logp);
 
-	void EMB(complex<double>* vals, long size);
+    void encode(ZZ* mx, complex<double>* vals, long slots, long logp);
 
-	void EMBInvLazy(complex<double>* vals, long size);
+    void decode(ZZ* mx, complex<double>* vals, long slots, long logp,
+                long logq);
 
-	void EMBInv(complex<double>* vals, long size);
+    //----------------------------------------------------------------------------------
+    //   CONTEXT
+    //----------------------------------------------------------------------------------
 
-	void encode(ZZ* mx, double* vals, long slots, long logp);
+    void addBootContext(long logSlots, long logp);
 
-	void encode(ZZ* mx, complex<double>* vals, long slots, long logp);
+    //----------------------------------------------------------------------------------
+    //   MULTIPLICATION
+    //----------------------------------------------------------------------------------
 
-	void decode(ZZ* mx, complex<double>* vals, long slots, long logp, long logq);
+    long maxBits(const ZZ* f, long n);
 
+    void CRT(uint64_t* rx, ZZ* x, const long np);
 
-	//----------------------------------------------------------------------------------
-	//   CONTEXT
-	//----------------------------------------------------------------------------------
+    void addNTTAndEqual(uint64_t* ra, uint64_t* rb, const long np);
 
+    void mult(ZZ* x, ZZ* a, ZZ* b, long np, const ZZ& q);
 
-	void addBootContext(long logSlots, long logp);
+    void multNTT(ZZ* x, ZZ* a, uint64_t* rb, long np, const ZZ& q);
 
+    void multDNTT(ZZ* x, uint64_t* a, uint64_t* rb, long np, const ZZ& q);
 
-	//----------------------------------------------------------------------------------
-	//   MULTIPLICATION
-	//----------------------------------------------------------------------------------
+    void multAndEqual(ZZ* a, ZZ* b, long np, const ZZ& q);
 
-	long maxBits(const ZZ* f, long n);
+    void multNTTAndEqual(ZZ* a, uint64_t* rb, long np, const ZZ& q);
 
-	void CRT(uint64_t* rx, ZZ* x, const long np);
+    void square(ZZ* x, ZZ* a, long np, const ZZ& q);
 
-	void addNTTAndEqual(uint64_t* ra, uint64_t* rb, const long np);
+    void squareNTT(ZZ* x, uint64_t* ra, long np, const ZZ& q);
 
-	void mult(ZZ* x, ZZ* a, ZZ* b, long np, const ZZ& q);
+    void squareAndEqual(ZZ* a, long np, const ZZ& q);
 
-	void multNTT(ZZ* x, ZZ* a, uint64_t* rb, long np, const ZZ& q);
+    //----------------------------------------------------------------------------------
+    //   OTHER
+    //----------------------------------------------------------------------------------
 
-	void multDNTT(ZZ* x, uint64_t* a, uint64_t* rb, long np, const ZZ& q);
+    void mod(ZZ* res, ZZ* p, const ZZ& QQ);
 
-	void multAndEqual(ZZ* a, ZZ* b, long np, const ZZ& q);
+    void modAndEqual(ZZ* p, const ZZ& QQ);
 
-	void multNTTAndEqual(ZZ* a, uint64_t* rb, long np, const ZZ& q);
+    void negate(ZZ* res, ZZ* p);
 
-	void square(ZZ* x, ZZ* a, long np, const ZZ& q);
+    void negateAndEqual(ZZ* p);
 
-	void squareNTT(ZZ* x, uint64_t* ra, long np, const ZZ& q);
+    void add(ZZ* res, ZZ* p1, ZZ* p2, const ZZ& QQ);
 
-	void squareAndEqual(ZZ* a, long np, const ZZ& q);
+    void addAndEqual(ZZ* p1, ZZ* p2, const ZZ& QQ);
 
+    void sub(ZZ* res, ZZ* p1, ZZ* p2, const ZZ& QQ);
 
-	//----------------------------------------------------------------------------------
-	//   OTHER
-	//----------------------------------------------------------------------------------
+    void subAndEqual(ZZ* p1, ZZ* p2, const ZZ& QQ);
 
+    void subAndEqual2(ZZ* p1, ZZ* p2, const ZZ& QQ);
 
-	void mod(ZZ* res, ZZ* p, const ZZ& QQ);
+    void multByMonomial(ZZ* res, ZZ* p, long mDeg);
 
-	void modAndEqual(ZZ* p, const ZZ& QQ);
+    void multByMonomialAndEqual(ZZ* p, long mDeg);
 
-	void negate(ZZ* res, ZZ* p);
+    void multByConst(ZZ* res, ZZ* p, ZZ& cnst, const ZZ& QQ);
 
-	void negateAndEqual(ZZ* p);
+    void multByConstAndEqual(ZZ* p, ZZ& cnst, const ZZ& QQ);
 
-	void add(ZZ* res, ZZ* p1, ZZ* p2, const ZZ& QQ);
+    void leftShift(ZZ* res, ZZ* p, const long bits, const ZZ& QQ);
 
-	void addAndEqual(ZZ* p1, ZZ* p2, const ZZ& QQ);
+    void leftShiftAndEqual(ZZ* p, const long bits, const ZZ& QQ);
 
-	void sub(ZZ* res, ZZ* p1, ZZ* p2, const ZZ& QQ);
+    void doubleAndEqual(ZZ* p, const ZZ& QQ);
 
-	void subAndEqual(ZZ* p1, ZZ* p2, const ZZ& QQ);
+    void rightShift(ZZ* res, ZZ* p, long bits);
 
-	void subAndEqual2(ZZ* p1, ZZ* p2, const ZZ& QQ);
+    void rightShiftAndEqual(ZZ* p, long bits);
 
-	void multByMonomial(ZZ* res, ZZ* p, long mDeg);
+    //----------------------------------------------------------------------------------
+    //   ROTATION & CONJUGATION
+    //----------------------------------------------------------------------------------
 
-	void multByMonomialAndEqual(ZZ* p, long mDeg);
+    void leftRotate(ZZ* res, ZZ* p, long r);
 
-	void multByConst(ZZ* res, ZZ* p, ZZ& cnst, const ZZ& QQ);
+    void conjugate(ZZ* res, ZZ* p);
 
-	void multByConstAndEqual(ZZ* p, ZZ& cnst, const ZZ& QQ);
+    //----------------------------------------------------------------------------------
+    //   SAMPLING
+    //----------------------------------------------------------------------------------
 
-	void leftShift(ZZ* res, ZZ* p, const long bits, const ZZ& QQ);
+    void subFromGaussAndEqual(ZZ* res, const ZZ& q);
 
-	void leftShiftAndEqual(ZZ* p, const long bits, const ZZ& QQ);
+    void subFromGaussAndEqual(ZZ* res, const ZZ& q, double _sigma);
 
-	void doubleAndEqual(ZZ* p, const ZZ& QQ);
+    void addGaussAndEqual(ZZ* res, const ZZ& q);
 
-	void rightShift(ZZ* res, ZZ* p, long bits);
+    void addGaussAndEqual(ZZ* res, const ZZ& q, double _sigma);
 
-	void rightShiftAndEqual(ZZ* p, long bits);
+    void sampleHWT(ZZ* res);
 
+    void sampleZO(ZZ* res);
 
-	//----------------------------------------------------------------------------------
-	//   ROTATION & CONJUGATION
-	//----------------------------------------------------------------------------------
+    void sampleUniform2(ZZ* res, long bits);
 
+    //----------------------------------------------------------------------------------
+    //   DFT
+    //----------------------------------------------------------------------------------
 
-	void leftRotate(ZZ* res, ZZ* p, long r);
+    void DFT(complex<double>* vals, long n);
 
-	void conjugate(ZZ* res, ZZ* p);
+    void IDFTLazy(complex<double>* vals, long n);
 
-
-	//----------------------------------------------------------------------------------
-	//   SAMPLING
-	//----------------------------------------------------------------------------------
-
-
-	void subFromGaussAndEqual(ZZ* res, const ZZ& q);
-	
-	void subFromGaussAndEqual(ZZ* res, const ZZ& q, double _sigma);
-
-	void addGaussAndEqual(ZZ* res, const ZZ& q);
-	
-	void addGaussAndEqual(ZZ* res, const ZZ& q, double _sigma);
-
-	void sampleHWT(ZZ* res);
-
-	void sampleZO(ZZ* res);
-
-	void sampleUniform2(ZZ* res, long bits);
-
-
-	//----------------------------------------------------------------------------------
-	//   DFT
-	//----------------------------------------------------------------------------------
-
-
-	void DFT(complex<double>* vals, long n);
-
-	void IDFTLazy(complex<double>* vals, long n);
-
-	void IDFT(complex<double>* vals, long n);
-
+    void IDFT(complex<double>* vals, long n);
 };
+
+}  // namespace heaan
 
 #endif

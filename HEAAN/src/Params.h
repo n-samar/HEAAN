@@ -1,18 +1,21 @@
 /*
-* Copyright (c) by CryptoLab inc.
-* This program is licensed under a
-* Creative Commons Attribution-NonCommercial 3.0 Unported License.
-* You should have received a copy of the license along with this
-* work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
-*/
+ * Copyright (c) by CryptoLab inc.
+ * This program is licensed under a
+ * Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ * You should have received a copy of the license along with this
+ * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+ */
 #ifndef HEAAN_PARAMS_H_
 #define HEAAN_PARAMS_H_
 
 #include <NTL/ZZ.h>
+
 using namespace NTL;
 
+namespace heaan {
+
 static const long logN = 16;
-static const long logQ = 800; // 128-bit security
+static const long logQ = 800;  // 128-bit security
 
 static const double sigma = 3.2;
 static const long h = 64;
@@ -30,5 +33,7 @@ static const long cbnd = (logQQ + NTL_ZZ_NBITS - 1) / NTL_ZZ_NBITS;
 static const long bignum = 0xfffffff;
 static const ZZ Q = power2_ZZ(logQ);
 static const ZZ QQ = power2_ZZ(logQQ);
+
+}  // namespace heaan
 
 #endif /* PARAMS_H_ */

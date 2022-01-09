@@ -1,10 +1,10 @@
 /*
-* Copyright (c) by CryptoLab inc.
-* This program is licensed under a
-* Creative Commons Attribution-NonCommercial 3.0 Unported License.
-* You should have received a copy of the license along with this
-* work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
-*/
+ * Copyright (c) by CryptoLab inc.
+ * This program is licensed under a
+ * Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ * You should have received a copy of the license along with this
+ * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+ */
 #ifndef HEAAN_EVALUATORUTILS_H_
 #define HEAAN_EVALUATORUTILS_H_
 
@@ -15,48 +15,47 @@
 using namespace std;
 using namespace NTL;
 
+namespace heaan {
+
 class EvaluatorUtils {
-public:
+   public:
+    //----------------------------------------------------------------------------------
+    //   RANDOM REAL AND COMPLEX NUMBERS
+    //----------------------------------------------------------------------------------
 
+    static double randomReal(double bound = 1.0);
 
-	//----------------------------------------------------------------------------------
-	//   RANDOM REAL AND COMPLEX NUMBERS
-	//----------------------------------------------------------------------------------
+    static complex<double> randomComplex(double bound = 1.0);
 
+    static complex<double> randomCircle(double anglebound = 1.0);
 
-	static double randomReal(double bound = 1.0);
+    static double* randomRealArray(long size, double bound = 1.0);
 
-	static complex<double> randomComplex(double bound = 1.0);
+    static complex<double>* randomComplexArray(long size, double bound = 1.0);
 
-	static complex<double> randomCircle(double anglebound = 1.0);
+    static complex<double>* randomCircleArray(long size, double bound = 1.0);
 
-	static double* randomRealArray(long size, double bound = 1.0);
+    //----------------------------------------------------------------------------------
+    //   DOUBLE & RR <-> ZZ
+    //----------------------------------------------------------------------------------
 
-	static complex<double>* randomComplexArray(long size, double bound = 1.0);
+    static double scaleDownToReal(const ZZ& x, const long logp);
 
-	static complex<double>* randomCircleArray(long size, double bound = 1.0);
+    static ZZ scaleUpToZZ(const double x, const long logp);
 
+    static ZZ scaleUpToZZ(const RR& x, const long logp);
 
-	//----------------------------------------------------------------------------------
-	//   DOUBLE & RR <-> ZZ
-	//----------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------
+    //   ROTATIONS
+    //----------------------------------------------------------------------------------
 
-	static double scaleDownToReal(const ZZ& x, const long logp);
+    static void leftRotateAndEqual(complex<double>* vals, const long n,
+                                   const long r);
 
-	static ZZ scaleUpToZZ(const double x, const long logp);
-
-	static ZZ scaleUpToZZ(const RR& x, const long logp);
-
-
-	//----------------------------------------------------------------------------------
-	//   ROTATIONS
-	//----------------------------------------------------------------------------------
-
-
-	static void leftRotateAndEqual(complex<double>* vals, const long n, const long r);
-
-	static void rightRotateAndEqual(complex<double>* vals, const long n, const long r);
-
+    static void rightRotateAndEqual(complex<double>* vals, const long n,
+                                    const long r);
 };
+
+}  // namespace heaan
 
 #endif

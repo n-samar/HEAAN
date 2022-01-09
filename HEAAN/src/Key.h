@@ -1,27 +1,31 @@
 /*
-* Copyright (c) by CryptoLab inc.
-* This program is licensed under a
-* Creative Commons Attribution-NonCommercial 3.0 Unported License.
-* You should have received a copy of the license along with this
-* work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
-*/
+ * Copyright (c) by CryptoLab inc.
+ * This program is licensed under a
+ * Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ * You should have received a copy of the license along with this
+ * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+ */
 #ifndef HEAAN_KEY_H_
 #define HEAAN_KEY_H_
 
-#include <NTL/ZZ.h>
 #include "Params.h"
+
+#include <NTL/ZZ.h>
 
 using namespace NTL;
 
+namespace heaan {
+
 class Key {
-public:
+   public:
+    uint64_t* rax = new uint64_t[Nnprimes]();
+    uint64_t* rbx = new uint64_t[Nnprimes]();
 
-	uint64_t* rax = new uint64_t[Nnprimes]();
-	uint64_t* rbx = new uint64_t[Nnprimes]();
+    Key();
 
-	Key();
-
-	virtual ~Key();
+    virtual ~Key();
 };
+
+}  // namespace heaan
 
 #endif
