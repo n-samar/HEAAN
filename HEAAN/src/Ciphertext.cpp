@@ -11,6 +11,9 @@
 
 #include <NTL/tools.h>
 
+using namespace std;
+using namespace NTL;
+
 namespace heaan {
 
 Ciphertext::Ciphertext(long logp, long logq, long n)

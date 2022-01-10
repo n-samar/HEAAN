@@ -7,6 +7,9 @@
  */
 #include "SerializationUtils.h"
 
+using namespace std;
+using namespace NTL;
+
 namespace heaan {
 
 void SerializationUtils::writeCiphertext(Ciphertext& cipher, string path) {

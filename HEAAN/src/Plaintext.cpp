@@ -1,20 +1,20 @@
 /*
-* Copyright (c) by CryptoLab inc.
-* This program is licensed under a
-* Creative Commons Attribution-NonCommercial 3.0 Unported License.
-* You should have received a copy of the license along with this
-* work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
-*/
+ * Copyright (c) by CryptoLab inc.
+ * This program is licensed under a
+ * Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ * You should have received a copy of the license along with this
+ * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+ */
 #include "Plaintext.h"
+
+using namespace std;
+using namespace NTL;
 
 namespace heaan {
 
-Plaintext::Plaintext(long logp, long logq, long n) : logp(logp), logq(logq), n(n) {
+Plaintext::Plaintext(long logp, long logq, long n)
+    : logp(logp), logq(logq), n(n) {}
 
-}
-
-Plaintext::~Plaintext() {
-	delete[] mx;
-}
+Plaintext::~Plaintext() { delete[] mx; }
 
 }  // namespace heaan

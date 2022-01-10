@@ -11,6 +11,9 @@
 #include "SerializationUtils.h"
 #include "StringUtils.h"
 
+using namespace std;
+using namespace NTL;
+
 namespace heaan {
 
 Scheme::Scheme(SecretKey& secretKey, Ring& ring, bool isSerialized)

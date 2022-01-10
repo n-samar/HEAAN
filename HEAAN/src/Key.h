@@ -10,10 +10,6 @@
 
 #include "Params.h"
 
-#include <NTL/ZZ.h>
-
-using namespace NTL;
-
 namespace heaan {
 
 class Key {

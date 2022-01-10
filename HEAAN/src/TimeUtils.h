@@ -10,8 +10,6 @@
 
 #include <iostream>
 
-using namespace std;
-
 struct timeval;
 
 namespace heaan {
@@ -23,9 +21,9 @@ class TimeUtils {
 
     TimeUtils();
 
-    void start(string msg);
+    void start(std::string msg);
 
-    void stop(string msg);
+    void stop(std::string msg);
 };
 
 }  // namespace heaan

@@ -7,6 +7,9 @@
  */
 #include "SchemeAlgo.h"
 
+using namespace std;
+using namespace NTL;
+
 namespace heaan {
 
 void SchemeAlgo::powerOf2(Ciphertext& res, Ciphertext& cipher, long logp,

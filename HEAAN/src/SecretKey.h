@@ -12,14 +12,11 @@
 
 #include "Ring.h"
 
-using namespace std;
-using namespace NTL;
-
 namespace heaan {
 
 class SecretKey {
    public:
-    ZZ* sx = new ZZ[N];
+    NTL::ZZ* sx = new NTL::ZZ[N];
 
     SecretKey(Ring& ring);
 };
