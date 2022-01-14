@@ -1,255 +1,267 @@
 /*
-* Copyright (c) by CryptoLab inc.
-* This program is licensed under a
-* Creative Commons Attribution-NonCommercial 3.0 Unported License.
-* You should have received a copy of the license along with this
-* work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
-*/
+ * Copyright (c) by CryptoLab inc.
+ * This program is licensed under a
+ * Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ * You should have received a copy of the license along with this
+ * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+ */
 #ifndef HEAAN_SCHEME_H_
 #define HEAAN_SCHEME_H_
 
 #include <NTL/RR.h>
 #include <NTL/ZZ.h>
+
 #include <complex>
 #include <string>
 
 #include "BootContext.h"
-#include "SecretKey.h"
 #include "Ciphertext.h"
-#include "Plaintext.h"
-#include "Key.h"
 #include "EvaluatorUtils.h"
+#include "Key.h"
+#include "Plaintext.h"
 #include "Ring.h"
+#include "SecretKey.h"
 
 namespace heaan {
 
 static long ENCRYPTION = 0;
-static long MULTIPLICATION  = 1;
+static long MULTIPLICATION = 1;
 static long CONJUGATION = 2;
 
 class Scheme {
-private:
-public:
-	Ring& ring;
+ private:
+ public:
+  Ring& ring;
 
-	bool isSerialized;
+  bool isSerialized;
 
-	std::map<long, Key*> keyMap; ///< contain Encryption, Multiplication and Conjugation keys, if generated
-	std::map<long, Key*> leftRotKeyMap; ///< contain left rotation keys, if generated
+  std::map<long, Key*> keyMap;  ///< contain Encryption, Multiplication and
+                                ///< Conjugation keys, if generated
+  std::map<long, Key*>
+      leftRotKeyMap;  ///< contain left rotation keys, if generated
 
-	std::map<long, std::string> serKeyMap; ///< contain Encryption, Multiplication and Conjugation keys, if generated
-	std::map<long, std::string> serLeftRotKeyMap; ///< contain left rotation keys, if generated
+  std::map<long, std::string>
+      serKeyMap;  ///< contain Encryption, Multiplication and Conjugation keys,
+                  ///< if generated
+  std::map<long, std::string>
+      serLeftRotKeyMap;  ///< contain left rotation keys, if generated
 
-	Scheme(SecretKey& secretKey, Ring& ring, bool isSerialized = false);
+  Scheme(SecretKey& secretKey, Ring& ring, bool isSerialized = false);
 
-	virtual ~Scheme();
+  virtual ~Scheme();
 
-	//----------------------------------------------------------------------------------
-	//   KEYS GENERATION
-	//----------------------------------------------------------------------------------
+  //----------------------------------------------------------------------------------
+  //   KEYS GENERATION
+  //----------------------------------------------------------------------------------
 
+  void addEncKey(SecretKey& secretKey);
 
-	void addEncKey(SecretKey& secretKey);
+  void addMultKey(SecretKey& secretKey);
 
-	void addMultKey(SecretKey& secretKey);
+  void addConjKey(SecretKey& secretKey);
 
-	void addConjKey(SecretKey& secretKey);
+  void addLeftRotKey(SecretKey& secretKey, long r);
 
-	void addLeftRotKey(SecretKey& secretKey, long r);
+  void addRightRotKey(SecretKey& secretKey, long r);
 
-	void addRightRotKey(SecretKey& secretKey, long r);
+  void addLeftRotKeys(SecretKey& secretKey);
 
-	void addLeftRotKeys(SecretKey& secretKey);
+  void addRightRotKeys(SecretKey& secretKey);
 
-	void addRightRotKeys(SecretKey& secretKey);
+  void addBootKey(SecretKey& secretKey, long logl, long logp);
 
-	void addBootKey(SecretKey& secretKey, long logl, long logp);
+  //----------------------------------------------------------------------------------
+  //   ENCODING & DECODING
+  //----------------------------------------------------------------------------------
 
+  void encode(Plaintext& plain, std::complex<double>* vals, long n, long logp,
+              long logq);
 
-	//----------------------------------------------------------------------------------
-	//   ENCODING & DECODING
-	//----------------------------------------------------------------------------------
+  void encode(Plaintext& plain, double* vals, long n, long logp, long logq);
 
+  std::complex<double>* decode(Plaintext& plain);
 
-	void encode(Plaintext& plain, std::complex<double>* vals, long n, long logp, long logq);
+  void encodeSingle(Plaintext& plain, std::complex<double> val, long logp,
+                    long logq);
 
-	void encode(Plaintext& plain, double* vals, long n, long logp, long logq);
+  void encodeSingle(Plaintext& plain, double val, long logp, long logq);
 
-	std::complex<double>* decode(Plaintext& plain);
+  std::complex<double> decodeSingle(Plaintext& plain);
 
-	void encodeSingle(Plaintext& plain, std::complex<double> val, long logp, long logq);
+  //----------------------------------------------------------------------------------
+  //   ENCRYPTION & DECRYPTION
+  //----------------------------------------------------------------------------------
 
-	void encodeSingle(Plaintext& plain, double val, long logp, long logq);
+  void encryptMsg(Ciphertext& cipher, Plaintext& plain);
 
-	std::complex<double> decodeSingle(Plaintext& plain);
+  void decryptMsg(Plaintext& plain, SecretKey& secretKey, Ciphertext& cipher);
 
+  void encrypt(Ciphertext& cipher, std::complex<double>* vals, long n,
+               long logp, long logq);
 
-	//----------------------------------------------------------------------------------
-	//   ENCRYPTION & DECRYPTION
-	//----------------------------------------------------------------------------------
+  void encrypt(Ciphertext& cipher, double* vals, long n, long logp, long logq);
 
+  void encryptBySk(Ciphertext& cipher, SecretKey& secretKey,
+                   std::complex<double>* vals, long n, long logp, long logq,
+                   double = 3.2);
 
-	void encryptMsg(Ciphertext& cipher, Plaintext& plain);
+  void encryptBySk(Ciphertext& cipher, SecretKey& secretKey, double* vals,
+                   long n, long logp, long logq, double = 3.2);
 
-	void decryptMsg(Plaintext& plain, SecretKey& secretKey, Ciphertext& cipher);
+  void encryptZeros(Ciphertext& cipher, long n, long logp, long logq);
 
-	void encrypt(Ciphertext& cipher, std::complex<double>* vals, long n, long logp, long logq);
+  std::complex<double>* decrypt(SecretKey& secretKey, Ciphertext& cipher);
 
-	void encrypt(Ciphertext& cipher, double* vals, long n, long logp, long logq);
+  std::complex<double>* decryptForShare(SecretKey& secretKey,
+                                        Ciphertext& cipher, long = 0);
 
-	void encryptBySk(Ciphertext& cipher, SecretKey& secretKey, std::complex<double>* vals, long n, long logp, long logq, double=3.2);
+  void encryptSingle(Ciphertext& cipher, std::complex<double> val, long logp,
+                     long logq);
 
-	void encryptBySk(Ciphertext& cipher, SecretKey& secretKey, double* vals, long n, long logp, long logq, double=3.2);
+  void encryptSingle(Ciphertext& cipher, double val, long logp, long logq);
 
-	void encryptZeros(Ciphertext& cipher, long n, long logp, long logq);
+  std::complex<double> decryptSingle(SecretKey& secretKey, Ciphertext& cipher);
 
-	std::complex<double>* decrypt(SecretKey& secretKey, Ciphertext& cipher);
+  //----------------------------------------------------------------------------------
+  //   HOMOMORPHIC OPERATIONS
+  //----------------------------------------------------------------------------------
 
-	std::complex<double>* decryptForShare(SecretKey& secretKey, Ciphertext& cipher, long=0);
+  void negate(Ciphertext& res, Ciphertext& cipher);
 
-	void encryptSingle(Ciphertext& cipher, std::complex<double> val, long logp, long logq);
+  void negateAndEqual(Ciphertext& cipher);
 
-	void encryptSingle(Ciphertext& cipher, double val, long logp, long logq);
+  void add(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2);
 
-	std::complex<double> decryptSingle(SecretKey& secretKey, Ciphertext& cipher);
+  void addAndEqual(Ciphertext& cipher1, Ciphertext& cipher2);
 
+  void addConst(Ciphertext& res, Ciphertext& cipher, double cnst, long logp);
 
-	//----------------------------------------------------------------------------------
-	//   HOMOMORPHIC OPERATIONS
-	//----------------------------------------------------------------------------------
+  void addConst(Ciphertext& res, Ciphertext& cipher, NTL::RR& cnst, long logp);
 
-	void negate(Ciphertext& res, Ciphertext& cipher);
+  void addConst(Ciphertext& res, Ciphertext& cipher, std::complex<double> cnst,
+                long logp);
 
-	void negateAndEqual(Ciphertext& cipher);
+  void addConstAndEqual(Ciphertext& cipher, double cnst, long logp);
 
-	void add(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2);
+  void addConstAndEqual(Ciphertext& cipher, NTL::RR& cnst, long logp);
 
-	void addAndEqual(Ciphertext& cipher1, Ciphertext& cipher2);
+  void addConstAndEqual(Ciphertext& cipher, std::complex<double> cnst,
+                        long logp);
 
-	void addConst(Ciphertext& res, Ciphertext& cipher, double cnst, long logp);
+  void sub(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2);
 
-	void addConst(Ciphertext& res, Ciphertext& cipher, NTL::RR& cnst, long logp);
+  void subAndEqual(Ciphertext& cipher1, Ciphertext& cipher2);
 
-	void addConst(Ciphertext& res, Ciphertext& cipher, std::complex<double> cnst, long logp);
+  void subAndEqual2(Ciphertext& cipher1, Ciphertext& cipher2);
 
-	void addConstAndEqual(Ciphertext& cipher, double cnst, long logp);
+  void imult(Ciphertext& res, Ciphertext& cipher);
 
-	void addConstAndEqual(Ciphertext& cipher, NTL::RR& cnst, long logp);
+  void idiv(Ciphertext& res, Ciphertext& cipher);
 
-	void addConstAndEqual(Ciphertext& cipher, std::complex<double> cnst, long logp);
+  void imultAndEqual(Ciphertext& cipher);
 
-	void sub(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2);
+  void idivAndEqual(Ciphertext& cipher);
 
-	void subAndEqual(Ciphertext& cipher1, Ciphertext& cipher2);
+  void mult(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2);
 
-	void subAndEqual2(Ciphertext& cipher1, Ciphertext& cipher2);
+  void multAndEqual(Ciphertext& cipher1, Ciphertext& cipher2);
 
-	void imult(Ciphertext& res, Ciphertext& cipher);
+  void square(Ciphertext& res, Ciphertext& cipher);
 
-	void idiv(Ciphertext& res, Ciphertext& cipher);
+  void squareAndEqual(Ciphertext& cipher);
 
-	void imultAndEqual(Ciphertext& cipher);
+  void multByConst(Ciphertext& res, Ciphertext& cipher, double cnst, long logp);
 
-	void idivAndEqual(Ciphertext& cipher);
+  void multByConst(Ciphertext& res, Ciphertext& cipher,
+                   std::complex<double> cnst, long logp);
 
-	void mult(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2);
+  void multByConstVec(Ciphertext& res, Ciphertext& cipher,
+                      std::complex<double>* cnstVec, long logp);
 
-	void multAndEqual(Ciphertext& cipher1, Ciphertext& cipher2);
+  void multByConstVecAndEqual(Ciphertext& cipher, std::complex<double>* cnstVec,
+                              long logp);
 
-	void square(Ciphertext& res, Ciphertext& cipher);
+  void multByConstAndEqual(Ciphertext& cipher, double cnst, long logp);
 
-	void squareAndEqual(Ciphertext& cipher);
+  void multByConstAndEqual(Ciphertext& cipher, NTL::RR& cnst, long logp);
 
-	void multByConst(Ciphertext& res, Ciphertext& cipher, double cnst, long logp);
+  void multByConstAndEqual(Ciphertext& cipher, std::complex<double> cnst,
+                           long logp);
 
-	void multByConst(Ciphertext& res, Ciphertext& cipher, std::complex<double> cnst, long logp);
+  void multByPoly(Ciphertext& res, Ciphertext& cipher, NTL::ZZ* poly,
+                  long logp);
 
-	void multByConstVec(Ciphertext& res, Ciphertext& cipher, std::complex<double>* cnstVec, long logp);
+  void multByPolyNTT(Ciphertext& res, Ciphertext& cipher, uint64_t* rpoly,
+                     long bnd, long logp);
 
-	void multByConstVecAndEqual(Ciphertext& cipher, std::complex<double>* cnstVec, long logp);
+  void multByPolyAndEqual(Ciphertext& cipher, NTL::ZZ* poly, long logp);
 
-	void multByConstAndEqual(Ciphertext& cipher, double cnst, long logp);
+  void multByPolyNTTAndEqual(Ciphertext& cipher, uint64_t* rpoly, long bnd,
+                             long logp);
 
-	void multByConstAndEqual(Ciphertext& cipher, NTL::RR& cnst, long logp);
+  void multByMonomial(Ciphertext& res, Ciphertext& cipher, const long degree);
 
-	void multByConstAndEqual(Ciphertext& cipher, std::complex<double> cnst, long logp);
+  void multByMonomialAndEqual(Ciphertext& cipher, const long degree);
 
-	void multByPoly(Ciphertext& res, Ciphertext& cipher, NTL::ZZ* poly, long logp);
+  void leftShift(Ciphertext& res, Ciphertext& cipher, long bits);
 
-	void multByPolyNTT(Ciphertext& res, Ciphertext& cipher, uint64_t* rpoly, long bnd, long logp);
+  void leftShiftAndEqual(Ciphertext& cipher, long bits);
 
-	void multByPolyAndEqual(Ciphertext& cipher, NTL::ZZ* poly, long logp);
+  void doubleAndEqual(Ciphertext& cipher);
 
-	void multByPolyNTTAndEqual(Ciphertext& cipher, uint64_t* rpoly, long bnd, long logp);
+  void divByPo2(Ciphertext& res, Ciphertext& cipher, long bits);
 
-	void multByMonomial(Ciphertext& res, Ciphertext& cipher, const long degree);
+  void divByPo2AndEqual(Ciphertext& cipher, long bits);
 
-	void multByMonomialAndEqual(Ciphertext& cipher, const long degree);
+  //----------------------------------------------------------------------------------
+  //   RESCALING
+  //----------------------------------------------------------------------------------
 
-	void leftShift(Ciphertext& res, Ciphertext& cipher, long bits);
+  void reScaleBy(Ciphertext& res, Ciphertext& cipher, long dlogq);
 
-	void leftShiftAndEqual(Ciphertext& cipher, long bits);
+  void reScaleTo(Ciphertext& res, Ciphertext& cipher, long logq);
 
-	void doubleAndEqual(Ciphertext& cipher);
+  void reScaleByAndEqual(Ciphertext& cipher, long dlogq);
 
-	void divByPo2(Ciphertext& res, Ciphertext& cipher, long bits);
+  void reScaleToAndEqual(Ciphertext& cipher, long logq);
 
-	void divByPo2AndEqual(Ciphertext& cipher, long bits);
+  void modDownBy(Ciphertext& res, Ciphertext& cipher, long dlogq);
 
+  void modDownByAndEqual(Ciphertext& cipher, long dlogq);
 
-	//----------------------------------------------------------------------------------
-	//   RESCALING
-	//----------------------------------------------------------------------------------
+  void modDownTo(Ciphertext& res, Ciphertext& cipher, long logq);
 
+  void modDownToAndEqual(Ciphertext& cipher, long logq);
 
-	void reScaleBy(Ciphertext& res, Ciphertext& cipher, long dlogq);
+  //----------------------------------------------------------------------------------
+  //   ROTATIONS & CONJUGATIONS
+  //----------------------------------------------------------------------------------
 
-	void reScaleTo(Ciphertext& res, Ciphertext& cipher, long logq);
+  void leftRotateFast(Ciphertext& res, Ciphertext& cipher, long r);
+  void rightRotateFast(Ciphertext& res, Ciphertext& cipher, long r);
 
-	void reScaleByAndEqual(Ciphertext& cipher, long dlogq);
+  void leftRotateFastAndEqual(Ciphertext& cipher, long r);
+  void rightRotateFastAndEqual(Ciphertext& cipher, long r);
 
-	void reScaleToAndEqual(Ciphertext& cipher, long logq);
+  void conjugate(Ciphertext& res, Ciphertext& cipher);
+  void conjugateAndEqual(Ciphertext& cipher);
 
-	void modDownBy(Ciphertext& res, Ciphertext& cipher, long dlogq);
+  //----------------------------------------------------------------------------------
+  //   BOOTSTRAPPING
+  //----------------------------------------------------------------------------------
 
-	void modDownByAndEqual(Ciphertext& cipher, long dlogq);
+  void normalizeAndEqual(Ciphertext& cipher);
 
-	void modDownTo(Ciphertext& res, Ciphertext& cipher, long logq);
+  void coeffToSlotAndEqual(Ciphertext& cipher);
 
-	void modDownToAndEqual(Ciphertext& cipher, long logq);
+  void slotToCoeffAndEqual(Ciphertext& cipher);
 
+  void exp2piAndEqual(Ciphertext& cipher, long logp);
 
-	//----------------------------------------------------------------------------------
-	//   ROTATIONS & CONJUGATIONS
-	//----------------------------------------------------------------------------------
+  void evalExpAndEqual(Ciphertext& cipher, long logT, long logI = 4);
 
-
-	void leftRotateFast(Ciphertext& res, Ciphertext& cipher, long r);
-	void rightRotateFast(Ciphertext& res, Ciphertext& cipher, long r);
-
-	void leftRotateFastAndEqual(Ciphertext& cipher, long r);
-	void rightRotateFastAndEqual(Ciphertext& cipher, long r);
-
-	void conjugate(Ciphertext& res, Ciphertext& cipher);
-	void conjugateAndEqual(Ciphertext& cipher);
-
-
-	//----------------------------------------------------------------------------------
-	//   BOOTSTRAPPING
-	//----------------------------------------------------------------------------------
-
-
-	void normalizeAndEqual(Ciphertext& cipher);
-
-	void coeffToSlotAndEqual(Ciphertext& cipher);
-
-	void slotToCoeffAndEqual(Ciphertext& cipher);
-
-	void exp2piAndEqual(Ciphertext& cipher, long logp);
-
-	void evalExpAndEqual(Ciphertext& cipher, long logT, long logI = 4);
-
-	void bootstrapAndEqual(Ciphertext& cipher, long logq, long logQ, long logT, long logI = 4);
+  void bootstrapAndEqual(Ciphertext& cipher, long logq, long logQ, long logT,
+                         long logI = 4);
 };
 
 }  // namespace heaan

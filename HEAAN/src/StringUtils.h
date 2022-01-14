@@ -1,10 +1,10 @@
 /*
-* Copyright (c) by CryptoLab inc.
-* This program is licensed under a
-* Creative Commons Attribution-NonCommercial 3.0 Unported License.
-* You should have received a copy of the license along with this
-* work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
-*/
+ * Copyright (c) by CryptoLab inc.
+ * This program is licensed under a
+ * Creative Commons Attribution-NonCommercial 3.0 Unported License.
+ * You should have received a copy of the license along with this
+ * work.  If not, see <http://creativecommons.org/licenses/by-nc/3.0/>.
+ */
 #ifndef HEAAN_STRINGUTILS_H_
 #define HEAAN_STRINGUTILS_H_
 
@@ -16,44 +16,45 @@
 namespace heaan {
 
 class StringUtils {
-public:
+ public:
+  //----------------------------------------------------------------------------------
+  //   SHOW ARRAY
+  //----------------------------------------------------------------------------------
 
+  static void showVec(long* vals, long size);
 
-	//----------------------------------------------------------------------------------
-	//   SHOW ARRAY
-	//----------------------------------------------------------------------------------
+  static void showVec(double* vals, long size);
 
+  static void showVec(std::complex<double>* vals, long size);
 
-	static void showVec(long* vals, long size);
+  static void showVec(NTL::ZZ* vals, long size);
 
-	static void showVec(double* vals, long size);
+  //----------------------------------------------------------------------------------
+  //   SHOW & COMPARE ARRAY
+  //----------------------------------------------------------------------------------
 
-	static void showVec(std::complex<double>* vals, long size);
+  static void compare(double val1, double val2, std::string prefix);
 
-	static void showVec(NTL::ZZ* vals, long size);
+  static void compare(std::complex<double> val1, std::complex<double> val2,
+                      std::string prefix);
 
+  static void compare(double* vals1, double* vals2, long size,
+                      std::string prefix);
 
-	//----------------------------------------------------------------------------------
-	//   SHOW & COMPARE ARRAY
-	//----------------------------------------------------------------------------------
+  static void compare(std::complex<double>* vals1, std::complex<double>* vals2,
+                      long size, std::string prefix);
 
+  static void compare(double* vals1, double val2, long size,
+                      std::string prefix);
 
-	static void compare(double val1, double val2, std::string prefix);
+  static void compare(std::complex<double>* vals1, std::complex<double> val2,
+                      long size, std::string prefix);
 
-	static void compare(std::complex<double> val1, std::complex<double> val2, std::string prefix);
+  static void compare(double val1, double* vals2, long size,
+                      std::string prefix);
 
-	static void compare(double* vals1, double* vals2, long size, std::string prefix);
-
-	static void compare(std::complex<double>* vals1, std::complex<double>* vals2, long size, std::string prefix);
-
-	static void compare(double* vals1, double val2, long size, std::string prefix);
-
-	static void compare(std::complex<double>* vals1, std::complex<double> val2, long size, std::string prefix);
-
-	static void compare(double val1, double* vals2, long size, std::string prefix);
-
-	static void compare(std::complex<double> val1, std::complex<double>* vals2, long size, std::string prefix);
-
+  static void compare(std::complex<double> val1, std::complex<double>* vals2,
+                      long size, std::string prefix);
 };
 
 }  // namespace heaan
