@@ -280,6 +280,7 @@ void Scheme::encryptMsg(Ciphertext& cipher, Plaintext& plain) {
 
   ring.addGaussAndEqual(cipher.ax, qQ);
   ring.addGaussAndEqual(cipher.bx, qQ);
+  delete key;
 }
 
 void Scheme::decryptMsg(Plaintext& plain, SecretKey& secretKey,
@@ -580,6 +581,7 @@ void Scheme::mult(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2) {
   delete[] rb1;
   delete[] rb2;
   delete[] raa;
+  delete key;
 }
 
 void Scheme::multAndEqual(Ciphertext& cipher1, Ciphertext& cipher2) {
@@ -634,6 +636,7 @@ void Scheme::multAndEqual(Ciphertext& cipher1, Ciphertext& cipher2) {
   delete[] rb1;
   delete[] rb2;
   delete[] raa;
+  delete key;
 
   cipher1.logp += cipher2.logp;
 }
@@ -686,6 +689,7 @@ void Scheme::square(Ciphertext& res, Ciphertext& cipher) {
   delete[] ra;
   delete[] rb;
   delete[] raa;
+  delete key;
 }
 
 void Scheme::squareAndEqual(Ciphertext& cipher) {
@@ -735,6 +739,7 @@ void Scheme::squareAndEqual(Ciphertext& cipher) {
   delete[] ra;
   delete[] rb;
   delete[] raa;
+  delete key;
 }
 
 //-----------------------------------------
@@ -994,6 +999,7 @@ void Scheme::leftRotateFast(Ciphertext& res, Ciphertext& cipher, long r) {
   delete[] bxrot;
   delete[] axrot;
   delete[] rarot;
+  delete key;
 }
 
 void Scheme::leftRotateFastAndEqual(Ciphertext& cipher, long r) {
@@ -1021,6 +1027,7 @@ void Scheme::leftRotateFastAndEqual(Ciphertext& cipher, long r) {
   delete[] bxrot;
   delete[] axrot;
   delete[] rarot;
+  delete key;
 }
 
 void Scheme::rightRotateFast(Ciphertext& res, Ciphertext& cipher, long r) {
@@ -1060,6 +1067,7 @@ void Scheme::conjugate(Ciphertext& res, Ciphertext& cipher) {
   delete[] bxconj;
   delete[] axconj;
   delete[] raconj;
+  delete key;
 }
 
 void Scheme::conjugateAndEqual(Ciphertext& cipher) {
@@ -1090,6 +1098,7 @@ void Scheme::conjugateAndEqual(Ciphertext& cipher) {
   delete[] bxconj;
   delete[] axconj;
   delete[] raconj;
+  delete key;
 }
 
 //----------------------------------------------------------------------------------
