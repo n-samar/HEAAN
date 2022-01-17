@@ -45,7 +45,7 @@ void Scheme::addEncKey(SecretKey& secretKey) {
   delete[] bx;
 
   if (isSerialized) {
-    string path = "serkey/ENCRYPTION.txt";
+    string path = "/tmp/ENCRYPTION.txt";
     SerializationUtils::writeKey(key, path);
     serKeyMap.insert(pair<long, string>(ENCRYPTION, path));
     delete key;
@@ -76,7 +76,7 @@ void Scheme::addMultKey(SecretKey& secretKey) {
   delete[] ax;
   delete[] bx;
   if (isSerialized) {
-    string path = "serkey/MULTIPLICATION.txt";
+    string path = "/tmp/MULTIPLICATION.txt";
     SerializationUtils::writeKey(key, path);
     serKeyMap.insert(pair<long, string>(MULTIPLICATION, path));
     delete key;
@@ -107,7 +107,7 @@ void Scheme::addConjKey(SecretKey& secretKey) {
   delete[] bx;
 
   if (isSerialized) {
-    string path = "serkey/CONJUGATION.txt";
+    string path = "/tmp/CONJUGATION.txt";
     SerializationUtils::writeKey(key, path);
     serKeyMap.insert(pair<long, string>(CONJUGATION, path));
     delete key;
@@ -138,7 +138,7 @@ void Scheme::addLeftRotKey(SecretKey& secretKey, long r) {
   delete[] bx;
 
   if (isSerialized) {
-    string path = "serkey/ROTATION_" + to_string(r) + ".txt";
+    string path = "/tmp/ROTATION_" + to_string(r) + ".txt";
     SerializationUtils::writeKey(key, path);
     serLeftRotKeyMap.insert(pair<long, string>(r, path));
     delete key;
