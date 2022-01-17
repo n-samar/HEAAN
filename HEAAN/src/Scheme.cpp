@@ -1353,7 +1353,6 @@ void Scheme::bootstrapAndEqual(Ciphertext& cipher, long logq, long logQ,
   slotToCoeffAndEqual(cipher);
 
   cipher.logp = logp;
-  delete ring.bootContextMap.at(logSlots);
 }
 
 }  // namespace heaan
