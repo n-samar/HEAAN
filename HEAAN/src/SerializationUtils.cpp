@@ -63,6 +63,7 @@ Ciphertext* SerializationUtils::readCiphertext(string path) {
 
 void SerializationUtils::writeKey(Key* key, string path) {
   fstream fout;
+  std::cout << "Writing key: " << path << std::endl;
   fout.open(path, ios::binary | ios::out);
   fout.write(reinterpret_cast<char*>(key->rax), Nnprimes * sizeof(uint64_t));
   fout.write(reinterpret_cast<char*>(key->rbx), Nnprimes * sizeof(uint64_t));
@@ -72,6 +73,7 @@ void SerializationUtils::writeKey(Key* key, string path) {
 Key* SerializationUtils::readKey(string path) {
   Key* key = new Key();
   fstream fin;
+  std::cout << "Reading key: " << path << std::endl;
   fin.open(path, ios::binary | ios::in);
   fin.read(reinterpret_cast<char*>(key->rax), Nnprimes * sizeof(uint64_t));
   fin.read(reinterpret_cast<char*>(key->rbx), Nnprimes * sizeof(uint64_t));
