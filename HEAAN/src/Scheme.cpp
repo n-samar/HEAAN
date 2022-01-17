@@ -982,10 +982,9 @@ void Scheme::leftRotateFast(Ciphertext& res, Ciphertext& cipher, long r) {
   ring.leftRotate(bxrot, cipher.bx, r);
   ring.leftRotate(axrot, cipher.ax, r);
 
-  Key* key =
-      isSerialized
-          ? SerializationUtils::readKey("/tmp/ROTATION_" + std::to_string(r))
-          : leftRotKeyMap.at(r);
+  Key* key = isSerialized ? SerializationUtils::readKey(
+                                "/tmp/ROTATION_" + std::to_string(r) + ".txt")
+                          : leftRotKeyMap.at(r);
   res.copyParams(cipher);
 
   long np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
