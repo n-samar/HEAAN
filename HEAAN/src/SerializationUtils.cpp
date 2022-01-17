@@ -75,6 +75,10 @@ Key* SerializationUtils::readKey(string path) {
   fstream fin;
   std::cout << "Reading key: " << path << std::endl;
   fin.open(path, ios::binary | ios::in);
+  if (fin.fail()) {
+    std::cerr << "Unable to open file: " << path << std::endl;
+    exit(1);
+  }
   fin.read(reinterpret_cast<char*>(key->rax), Nnprimes * sizeof(uint64_t));
   fin.read(reinterpret_cast<char*>(key->rbx), Nnprimes * sizeof(uint64_t));
   fin.close();
