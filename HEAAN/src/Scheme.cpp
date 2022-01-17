@@ -263,9 +263,8 @@ void Scheme::encryptMsg(Ciphertext& cipher, Plaintext& plain) {
   ZZ* vx = new ZZ[N];
   ring.sampleZO(vx);
 
-  Key* key = isSerialized
-                 ? SerializationUtils::readKey(serKeyMap.at(ENCRYPTION))
-                 : keyMap.at(ENCRYPTION);
+  Key* key = isSerialized ? SerializationUtils::readKey("/tmp/ENCRYPTION.txt")
+                          : keyMap.at(ENCRYPTION);
 
   long np = ceil((1 + logQQ + logN + 2) / (double)pbnd);
   ring.multNTT(cipher.ax, vx, key->rax, np, qQ);
@@ -557,7 +556,7 @@ void Scheme::mult(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2) {
   ring.multDNTT(axbx, ra1, ra2, np, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey(serKeyMap.at(MULTIPLICATION))
+                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher1.logq + logQQ + logN + 2) / (double)pbnd);
@@ -611,7 +610,7 @@ void Scheme::multAndEqual(Ciphertext& cipher1, Ciphertext& cipher2) {
   ring.multDNTT(axbx, ra1, ra2, np, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey(serKeyMap.at(MULTIPLICATION))
+                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher1.logq + logQQ + logN + 2) / (double)pbnd);
@@ -667,7 +666,7 @@ void Scheme::square(Ciphertext& res, Ciphertext& cipher) {
   ring.addAndEqual(axbx, axbx, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey(serKeyMap.at(MULTIPLICATION))
+                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
@@ -715,7 +714,7 @@ void Scheme::squareAndEqual(Ciphertext& cipher) {
   ring.addAndEqual(axbx, axbx, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey(serKeyMap.at(MULTIPLICATION))
+                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
@@ -983,8 +982,10 @@ void Scheme::leftRotateFast(Ciphertext& res, Ciphertext& cipher, long r) {
   ring.leftRotate(bxrot, cipher.bx, r);
   ring.leftRotate(axrot, cipher.ax, r);
 
-  Key* key = isSerialized ? SerializationUtils::readKey(serLeftRotKeyMap.at(r))
-                          : leftRotKeyMap.at(r);
+  Key* key =
+      isSerialized
+          ? SerializationUtils::readKey("/tmp/ROTATION_" + std::to_string(r))
+          : leftRotKeyMap.at(r);
   res.copyParams(cipher);
 
   long np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
@@ -1011,7 +1012,8 @@ void Scheme::leftRotateFastAndEqual(Ciphertext& cipher, long r) {
 
   ring.leftRotate(bxrot, cipher.bx, r);
   ring.leftRotate(axrot, cipher.ax, r);
-  Key* key = isSerialized ? SerializationUtils::readKey(serLeftRotKeyMap.at(r))
+  Key* key = isSerialized ? SerializationUtils::readKey(
+                                "/tmp/ROTATION_" + std::to_string(r) + ".txt")
                           : leftRotKeyMap.at(r);
   long np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
   uint64_t* rarot = new uint64_t[np << logN];
@@ -1050,9 +1052,8 @@ void Scheme::conjugate(Ciphertext& res, Ciphertext& cipher) {
   ring.conjugate(bxconj, cipher.bx);
   ring.conjugate(axconj, cipher.ax);
 
-  Key* key = isSerialized
-                 ? SerializationUtils::readKey(serKeyMap.at(CONJUGATION))
-                 : keyMap.at(CONJUGATION);
+  Key* key = isSerialized ? SerializationUtils::readKey("/tmp/CONJUGATION.txt")
+                          : keyMap.at(CONJUGATION);
   res.copyParams(cipher);
   long np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
   uint64_t* raconj = new uint64_t[np << logN];
@@ -1080,9 +1081,8 @@ void Scheme::conjugateAndEqual(Ciphertext& cipher) {
   ring.conjugate(bxconj, cipher.bx);
   ring.conjugate(axconj, cipher.ax);
 
-  Key* key = isSerialized
-                 ? SerializationUtils::readKey(serKeyMap.at(CONJUGATION))
-                 : keyMap.at(CONJUGATION);
+  Key* key = isSerialized ? SerializationUtils::readKey("/tmp/CONJUGATION.txt")
+                          : keyMap.at(CONJUGATION);
 
   long np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
   uint64_t* raconj = new uint64_t[np << logN];
