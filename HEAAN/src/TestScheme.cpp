@@ -36,7 +36,7 @@ void TestScheme::testEncrypt(long logq, long logp, long logn) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   long n = (1 << logn);
   complex<double>* mvec = EvaluatorUtils::randomComplexArray(n);
@@ -62,7 +62,7 @@ void TestScheme::testEncryptBySk(long logq, long logp, long logn) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   long n = (1 << logn);
   complex<double>* mvec = EvaluatorUtils::randomComplexArray(n);
@@ -93,7 +93,7 @@ void TestScheme::testDecryptForShare(long logq, long logp, long logn,
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   long n = (1 << logn);
   complex<double>* mvec = EvaluatorUtils::randomComplexArray(n);
@@ -130,7 +130,7 @@ void TestScheme::testEncryptSingle(long logq, long logp) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   complex<double> mval = EvaluatorUtils::randomComplex();
   Ciphertext cipher;
@@ -154,7 +154,7 @@ void TestScheme::testAdd(long logq, long logp, long logn) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   long n = (1 << logn);
   complex<double>* mvec1 = EvaluatorUtils::randomComplexArray(n);
@@ -188,7 +188,7 @@ void TestScheme::testMult(long logq, long logp, long logn) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   long n = (1 << logn);
   complex<double>* mvec1 = EvaluatorUtils::randomComplexArray(n);
@@ -221,7 +221,7 @@ void TestScheme::testiMult(long logq, long logp, long logn) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   long n = (1 << logn);
 
@@ -258,7 +258,7 @@ void TestScheme::testRotateFast(long logq, long logp, long logn, long logr) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   long n = (1 << logn);
   long r = (1 << logr);
@@ -287,7 +287,7 @@ void TestScheme::testConjugate(long logq, long logp, long logn) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   scheme.addConjKey(secretKey);
 
@@ -324,7 +324,7 @@ void TestScheme::testPowerOf2(long logq, long logp, long logn, long logdeg) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -359,7 +359,7 @@ void TestScheme::testPower(long logq, long logp, long logn, long degree) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -394,7 +394,7 @@ void TestScheme::testInverse(long logq, long logp, long logn, long steps) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -425,7 +425,7 @@ void TestScheme::testLogarithm(long logq, long logp, long logn, long degree) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -456,7 +456,7 @@ void TestScheme::testExponent(long logq, long logp, long logn, long degree) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -488,7 +488,7 @@ void TestScheme::testExponentLazy(long logq, long logp, long logn,
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -520,7 +520,7 @@ void TestScheme::testSigmoid(long logq, long logp, long logn, long degree) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -552,7 +552,7 @@ void TestScheme::testSigmoidLazy(long logq, long logp, long logn, long degree) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
   SchemeAlgo algo(scheme);
 
   long n = 1 << logn;
@@ -589,7 +589,7 @@ void TestScheme::testBootstrap(long logq, long logp, long logSlots, long logT) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   timeutils.start("Key generating");
   scheme.addBootKey(secretKey, logSlots, logq + 4);
@@ -647,7 +647,7 @@ void TestScheme::testBootstrapSingleReal(long logq, long logp, long logT) {
   TimeUtils timeutils;
   Ring ring;
   SecretKey secretKey(ring);
-  Scheme scheme(secretKey, ring);
+  Scheme scheme(secretKey, ring, true);
 
   timeutils.start("Key generating");
   scheme.addBootKey(secretKey, 0, logq + 4);

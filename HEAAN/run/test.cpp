@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
                      //= logp + 10
   logn = 3;          //< larger logn will make bootstrapping tech much slower
   long logT = 4;  //< this means that we use Taylor approximation in [-1/T,1/T]
-                  //with double angle fomula
+                  // with double angle fomula
   if (string(argv[1]) == "Bootstrapping")
     TestScheme::testBootstrap(logq, logp, logn, logT);
 
