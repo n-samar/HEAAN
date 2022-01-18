@@ -18,6 +18,18 @@ using namespace NTL;
 
 namespace heaan {
 
+namespace {
+
+bool file_exists(std::string file_path) {
+  std::ifstream file;
+  file.open(file_path);
+  auto result = !file.fail();
+  file.close();
+  return result;
+}
+
+}  // namespace
+
 Scheme::Scheme(SecretKey& secretKey, Ring& ring, bool isSerialized)
     : ring(ring), isSerialized(isSerialized) {
   addEncKey(secretKey);
@@ -30,6 +42,10 @@ Scheme::~Scheme() {
 }
 
 void Scheme::addEncKey(SecretKey& secretKey) {
+  if (file_exists("/tmp/ENCRYPTION.txt")) {
+    serKeyMap.insert(pair<long, string>(ENCRYPTION, "/tmp/ENCRYPTION.txt"));
+    return;
+  }
   ZZ* ax = new ZZ[N];
   ZZ* bx = new ZZ[N];
 
@@ -55,6 +71,11 @@ void Scheme::addEncKey(SecretKey& secretKey) {
 }
 
 void Scheme::addMultKey(SecretKey& secretKey) {
+  if (file_exists("/tmp/MULTIPLICATION.txt")) {
+    serKeyMap.insert(
+        pair<long, string>(MULTIPLICATION, "/tmp/MULTIPLICATION.txt"));
+    return;
+  }
   ZZ* ax = new ZZ[N];
   ZZ* bx = new ZZ[N];
   ZZ* sxsx = new ZZ[N];
@@ -86,6 +107,10 @@ void Scheme::addMultKey(SecretKey& secretKey) {
 }
 
 void Scheme::addConjKey(SecretKey& secretKey) {
+  if (file_exists("/tmp/CONJUGATION.txt")) {
+    serKeyMap.insert(pair<long, string>(CONJUGATION, "/tmp/CONJUGATION.txt"));
+    return;
+  }
   ZZ* ax = new ZZ[N];
   ZZ* bx = new ZZ[N];
 
@@ -117,6 +142,11 @@ void Scheme::addConjKey(SecretKey& secretKey) {
 }
 
 void Scheme::addLeftRotKey(SecretKey& secretKey, long r) {
+  std::string path = "/tmp/ROTATION_" + to_string(r) + ".txt";
+  if (file_exists(path)) {
+    serLeftRotKeyMap.insert(pair<long, string>(r, path));
+    return;
+  }
   ZZ* ax = new ZZ[N];
   ZZ* bx = new ZZ[N];
 
