@@ -629,6 +629,7 @@ void Ring::addGaussAndEqual(ZZ* res, const ZZ& q, double _sigma) {
 
 void Ring::sampleHWT(ZZ* res) {
   long idx = 0;
+  NTL::SetSeed(NTL::ZZ(0));
   ZZ tmp = RandomBits_ZZ(h);
   while (idx < h) {
     long i = RandomBits_long(logN);

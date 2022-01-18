@@ -42,8 +42,9 @@ Scheme::~Scheme() {
 }
 
 void Scheme::addEncKey(SecretKey& secretKey) {
-  if (file_exists("/tmp/ENCRYPTION.txt")) {
-    serKeyMap.insert(pair<long, string>(ENCRYPTION, "/tmp/ENCRYPTION.txt"));
+  if (file_exists("/tmp/HEAAN_ENCRYPTION.txt")) {
+    serKeyMap.insert(
+        pair<long, string>(ENCRYPTION, "/tmp/HEAAN_ENCRYPTION.txt"));
     return;
   }
   ZZ* ax = new ZZ[N];
@@ -61,7 +62,7 @@ void Scheme::addEncKey(SecretKey& secretKey) {
   delete[] bx;
 
   if (isSerialized) {
-    string path = "/tmp/ENCRYPTION.txt";
+    string path = "/tmp/HEAAN_ENCRYPTION.txt";
     SerializationUtils::writeKey(key, path);
     serKeyMap.insert(pair<long, string>(ENCRYPTION, path));
     delete key;
@@ -71,9 +72,9 @@ void Scheme::addEncKey(SecretKey& secretKey) {
 }
 
 void Scheme::addMultKey(SecretKey& secretKey) {
-  if (file_exists("/tmp/MULTIPLICATION.txt")) {
+  if (file_exists("/tmp/HEAAN_MULTIPLICATION.txt")) {
     serKeyMap.insert(
-        pair<long, string>(MULTIPLICATION, "/tmp/MULTIPLICATION.txt"));
+        pair<long, string>(MULTIPLICATION, "/tmp/HEAAN_MULTIPLICATION.txt"));
     return;
   }
   ZZ* ax = new ZZ[N];
@@ -97,7 +98,7 @@ void Scheme::addMultKey(SecretKey& secretKey) {
   delete[] ax;
   delete[] bx;
   if (isSerialized) {
-    string path = "/tmp/MULTIPLICATION.txt";
+    string path = "/tmp/HEAAN_MULTIPLICATION.txt";
     SerializationUtils::writeKey(key, path);
     serKeyMap.insert(pair<long, string>(MULTIPLICATION, path));
     delete key;
@@ -107,8 +108,9 @@ void Scheme::addMultKey(SecretKey& secretKey) {
 }
 
 void Scheme::addConjKey(SecretKey& secretKey) {
-  if (file_exists("/tmp/CONJUGATION.txt")) {
-    serKeyMap.insert(pair<long, string>(CONJUGATION, "/tmp/CONJUGATION.txt"));
+  if (file_exists("/tmp/HEAAN_CONJUGATION.txt")) {
+    serKeyMap.insert(
+        pair<long, string>(CONJUGATION, "/tmp/HEAAN_CONJUGATION.txt"));
     return;
   }
   ZZ* ax = new ZZ[N];
@@ -132,7 +134,7 @@ void Scheme::addConjKey(SecretKey& secretKey) {
   delete[] bx;
 
   if (isSerialized) {
-    string path = "/tmp/CONJUGATION.txt";
+    string path = "/tmp/HEAAN_CONJUGATION.txt";
     SerializationUtils::writeKey(key, path);
     serKeyMap.insert(pair<long, string>(CONJUGATION, path));
     delete key;
@@ -142,7 +144,7 @@ void Scheme::addConjKey(SecretKey& secretKey) {
 }
 
 void Scheme::addLeftRotKey(SecretKey& secretKey, long r) {
-  std::string path = "/tmp/ROTATION_" + to_string(r) + ".txt";
+  std::string path = "/tmp/HEAAN_ROTATION_" + to_string(r) + ".txt";
   if (file_exists(path)) {
     serLeftRotKeyMap.insert(pair<long, string>(r, path));
     return;
@@ -168,7 +170,7 @@ void Scheme::addLeftRotKey(SecretKey& secretKey, long r) {
   delete[] bx;
 
   if (isSerialized) {
-    string path = "/tmp/ROTATION_" + to_string(r) + ".txt";
+    string path = "/tmp/HEAAN_ROTATION_" + to_string(r) + ".txt";
     SerializationUtils::writeKey(key, path);
     serLeftRotKeyMap.insert(pair<long, string>(r, path));
     delete key;
@@ -293,8 +295,9 @@ void Scheme::encryptMsg(Ciphertext& cipher, Plaintext& plain) {
   ZZ* vx = new ZZ[N];
   ring.sampleZO(vx);
 
-  Key* key = isSerialized ? SerializationUtils::readKey("/tmp/ENCRYPTION.txt")
-                          : keyMap.at(ENCRYPTION);
+  Key* key = isSerialized
+                 ? SerializationUtils::readKey("/tmp/HEAAN_ENCRYPTION.txt")
+                 : keyMap.at(ENCRYPTION);
 
   long np = ceil((1 + logQQ + logN + 2) / (double)pbnd);
   ring.multNTT(cipher.ax, vx, key->rax, np, qQ);
@@ -586,7 +589,7 @@ void Scheme::mult(Ciphertext& res, Ciphertext& cipher1, Ciphertext& cipher2) {
   ring.multDNTT(axbx, ra1, ra2, np, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
+                 ? SerializationUtils::readKey("/tmp/HEAAN_MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher1.logq + logQQ + logN + 2) / (double)pbnd);
@@ -640,7 +643,7 @@ void Scheme::multAndEqual(Ciphertext& cipher1, Ciphertext& cipher2) {
   ring.multDNTT(axbx, ra1, ra2, np, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
+                 ? SerializationUtils::readKey("/tmp/HEAAN_MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher1.logq + logQQ + logN + 2) / (double)pbnd);
@@ -696,7 +699,7 @@ void Scheme::square(Ciphertext& res, Ciphertext& cipher) {
   ring.addAndEqual(axbx, axbx, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
+                 ? SerializationUtils::readKey("/tmp/HEAAN_MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
@@ -744,7 +747,7 @@ void Scheme::squareAndEqual(Ciphertext& cipher) {
   ring.addAndEqual(axbx, axbx, q);
 
   Key* key = isSerialized
-                 ? SerializationUtils::readKey("/tmp/MULTIPLICATION.txt")
+                 ? SerializationUtils::readKey("/tmp/HEAAN_MULTIPLICATION.txt")
                  : keyMap.at(MULTIPLICATION);
 
   np = ceil((cipher.logq + logQQ + logN + 2) / (double)pbnd);
