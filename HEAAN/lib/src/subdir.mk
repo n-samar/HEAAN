@@ -56,7 +56,7 @@ CPP_DEPS += \
 src/%.o: ../src/%.cpp
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C++ Compiler'
-	clang++-10 -I/usr/local/include -O3 -g -ggdb -fno-omit-frame-pointer -c -std=c++11 -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
+	clang++-10 -I/usr/local/include -I../../../ntl/include -I../../../ntl -O3 -g -ggdb -fno-omit-frame-pointer -c -std=c++11 -pthread -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
