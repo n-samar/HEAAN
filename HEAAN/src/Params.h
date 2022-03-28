@@ -12,8 +12,8 @@
 
 namespace heaan {
 
-static const long logN = 16;
-static const long logQ = 2000;
+static const long logN = 4;
+static const long logQ = 500;
 
 static const double sigma = 3.2;
 static const long h = 64;
