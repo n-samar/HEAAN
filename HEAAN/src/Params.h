@@ -12,6 +12,7 @@
 
 namespace heaan {
 
+// Test
 static const long logN = 4;
 static const long logQ = 500;
 
